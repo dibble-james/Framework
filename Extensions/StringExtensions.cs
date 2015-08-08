@@ -31,7 +31,7 @@ namespace System
             Justification = "Uri is not applicable here.")]
         public static string ToUrlString(this string value)
         {
-            Argument.CannotBeNull(value, nameof(value));
+            Argument.CannotBeNull(value, "value");
 
             return value.Replace(" ", "-").ToLower();
         }
@@ -51,7 +51,7 @@ namespace System
             Justification = "Uri is not applicable here.")]
         public static string FromUrlString(this string value)
         {
-            Argument.CannotBeNull(value, nameof(value));
+            Argument.CannotBeNull(value, "value");
 
             return value.Replace("-", " ");
         }
@@ -103,7 +103,7 @@ namespace System
             Justification = "I is.")]
         public static string Pluralise(this string value, int count)
         {
-            Argument.CannotBeNull(value, nameof(value));
+            Argument.CannotBeNull(value, "value");
 
             if (count == 1)
             {
