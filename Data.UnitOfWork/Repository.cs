@@ -156,7 +156,7 @@
         /// <returns>All the known <typeparamref name="TEntity"/>s.</returns>
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await this._entities.ToListAsync().ContinueWith(result => result as IEnumerable<TEntity>);
+            return await this._entities.ToListAsync();
         }
 
         /// <summary>
