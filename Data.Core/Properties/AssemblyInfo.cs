@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Data.Core")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Dibble.Framework.Data.Core")]
+[assembly: AssemblyDescription("Common base classes for persistence")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Data.Core")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCompany("James Dibble")]
+[assembly: AssemblyProduct("Dibble.Framework.Data.Core")]
+[assembly: AssemblyCopyright("James Dibble Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

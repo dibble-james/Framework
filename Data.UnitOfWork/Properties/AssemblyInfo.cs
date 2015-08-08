@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Data.UnitOfWork")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Dibble.Framework.Data.UnitOfWork")]
+[assembly: AssemblyDescription("An implementation of the Unit of Work pattern")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Data.UnitOfWork")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCompany("James Dibble")]
+[assembly: AssemblyProduct("Dibble.Framework.Data.UnitOfWork")]
+[assembly: AssemblyCopyright("James Dibble Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
