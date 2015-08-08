@@ -15,4 +15,3 @@
         IRepository<T> GetRepository<T>() where T : class, IPersistedObject;
     }
 }
-
