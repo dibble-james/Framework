@@ -31,9 +31,9 @@
             return this._entities.Count();
         }
         
-        public Task<int> CountAsync()
+        public async Task<int> CountAsync()
         {
-            return this._entities.CountAsync();
+            return await this._entities.CountAsync();
         }
 
         public int Count(Expression<Func<TEntity, bool>> @where)
@@ -41,9 +41,9 @@
             return this._entities.Count(@where);
         }
 
-        public Task<int> CountAsync(Expression<Func<TEntity, bool>> where)
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> where)
         {
-            return this._entities.CountAsync(where);
+            return await this._entities.CountAsync(where);
         }
 
         /// <summary>
@@ -108,9 +108,9 @@
         /// </summary>
         /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/>.</param>
         /// <returns>The <typeparamref name="TEntity"/> or null if none could be found.</returns>
-        public Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> where)
+        public async Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> where)
         {
-            var entity = this._entities.SingleOrDefaultAsync(where);
+            var entity = await this._entities.SingleOrDefaultAsync(where);
 
             return entity;
         }
@@ -134,9 +134,9 @@
         /// </summary>
         /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/>.</param>
         /// <returns>The first <typeparamref name="TEntity"/> or null if none could be found.</returns>
-        public Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> where)
+        public async Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> where)
         {
-            var entity = this._entities.FirstOrDefaultAsync(where);
+            var entity = await this._entities.FirstOrDefaultAsync(where);
 
             return entity;
         }
@@ -154,9 +154,9 @@
         /// Retrieve all the known <typeparamref name="TEntity"/>s.
         /// </summary>
         /// <returns>All the known <typeparamref name="TEntity"/>s.</returns>
-        public Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return this._entities.ToListAsync().ContinueWith(result => result as IEnumerable<TEntity>);
+            return await this._entities.ToListAsync().ContinueWith(result => result as IEnumerable<TEntity>);
         }
 
         /// <summary>
