@@ -1,13 +1,11 @@
-﻿namespace Dibble.Framework.Data.UnitOfWork
+﻿namespace Dibble.Framework.Data
 {
     using System;
-    using System.Data.Entity;
+
     using System.Threading.Tasks;
 
     public interface IUnitOfWork : IDisposable
     {
-        DbContext CurrentContext { get; }
-
         void Commit();
 
         Task CommitAsync();

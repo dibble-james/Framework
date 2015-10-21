@@ -1,4 +1,4 @@
-﻿namespace Dibble.Framework.Data.UnitOfWork
+﻿namespace Dibble.Framework.Data.EntityFramework
 {
     using System;
     using System.Collections.Generic;
@@ -9,7 +9,7 @@
     /// A class to store a database context to be injected into services so they all shared
     /// the same data resource.
     /// </summary>
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IEntityUnitOfWork
     {
         private readonly DbContext _context;
         private readonly IDictionary<Type, IRepository> _repositoryCache;

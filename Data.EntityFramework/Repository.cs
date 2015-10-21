@@ -1,4 +1,4 @@
-﻿namespace Dibble.Framework.Data.UnitOfWork
+﻿namespace Dibble.Framework.Data.EntityFramework
 {
     using System;
     using System.Collections.Generic;
@@ -20,7 +20,7 @@
         /// Initialises a new instance of the <see cref="Repository{TEntity}"/> class.
         /// </summary>
         /// <param name="context">The context to work from.</param>
-        public Repository(IUnitOfWork context)
+        public Repository(IEntityUnitOfWork context)
         {
             this._context = context.CurrentContext;
             this._entities = this._context.Set<TEntity>();

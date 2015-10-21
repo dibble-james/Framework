@@ -1,4 +1,4 @@
-﻿namespace Dibble.Framework.Data.UnitOfWork
+﻿namespace Dibble.Framework.Data
 {
     using System;
     using System.Linq.Expressions;
