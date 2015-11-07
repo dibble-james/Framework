@@ -5,20 +5,12 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface IRepository
+    public interface IRepository : IDisposable
     {
     }
 
     public interface IRepository<TEntity> : IRepository where TEntity : IPersistedObject
     {
-        int Count();
-
-        Task<int> CountAsync();
-
-        int Count(Expression<Func<TEntity, bool>> where);
-
-        Task<int> CountAsync(Expression<Func<TEntity, bool>> where);
-
         /// <summary>
         /// Place a <typeparamref name="TEntity"/> into the <see cref="IRepository{TEntity}"/>.
         /// </summary>
@@ -26,11 +18,43 @@
         void Add(TEntity entity);
 
         /// <summary>
-        /// Change a <typeparamref name="TEntity"/>.
+        /// Place a <typeparamref name="TEntity"/> into the <see cref="IRepository{TEntity}"/>.
         /// </summary>
-        /// <param name="entity">The <typeparamref name="TEntity"/> to change.</param>
-        void Update(TEntity entity);
+        /// <param name="entity">The <typeparamref name="TEntity"/> to add.</param>
+        Task AddAsync(TEntity entity);
 
+        /// <summary>
+        /// Get the number of <typeparamref name="TEntity"/>s in he persistence store.
+        /// </summary>
+        /// <returns>
+        /// The number of <typeparamref name="TEntity"/>s in he persistence store.
+        /// </returns>
+        int Count();
+
+        /// <summary>
+        /// Get the number of <typeparamref name="TEntity"/>s in he persistence store that
+        /// match a criteria.
+        /// </summary>
+        /// <returns>
+        /// The number of <typeparamref name="TEntity"/>s in he persistence store.
+        /// </returns>
+        int Count(Expression<Func<TEntity, bool>> where);
+
+        /// <summary>
+        /// Get the number of <typeparamref name="TEntity"/>s in he persistence store.
+        /// </summary>
+        /// <returns>
+        /// The number of <typeparamref name="TEntity"/>s in he persistence store.
+        /// </returns>
+        Task<int> CountAsync();
+        /// <summary>
+        /// Get the number of <typeparamref name="TEntity"/>s in he persistence store that
+        /// match a criteria.
+        /// </summary>
+        /// <returns>
+        /// The number of <typeparamref name="TEntity"/>s in he persistence store.
+        /// </returns>
+        Task<int> CountAsync(Expression<Func<TEntity, bool>> where);
         /// <summary>
         /// Remove a <typeparamref name="TEntity"/>.
         /// </summary>
@@ -44,20 +68,16 @@
         void Delete(Expression<Func<TEntity, bool>> where);
 
         /// <summary>
-        /// Get a <typeparamref name="TEntity"/> using a given criterion where it would be expected
-        /// that only one should be found.
+        /// Remove a <typeparamref name="TEntity"/>.
         /// </summary>
-        /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/>.</param>
-        /// <returns>The <typeparamref name="TEntity"/> or null if none could be found.</returns>
-        TEntity Single(Expression<Func<TEntity, bool>> where);
+        /// <param name="entity">The <typeparamref name="TEntity"/> to remove.</param>
+        Task DeleteAsync(TEntity entity);
 
         /// <summary>
-        /// Get a <typeparamref name="TEntity"/> using a given criterion where it would be expected
-        /// that only one should be found.
+        /// Delete a group of <typeparamref name="TEntity"/>s using a given criterion.
         /// </summary>
-        /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/>.</param>
-        /// <returns>The <typeparamref name="TEntity"/> or null if none could be found.</returns>
-        Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> where);
+        /// <param name="where">The criteria by which to delete <typeparamref name="TEntity"/>s.</param>
+        Task DeleteAsync(Expression<Func<TEntity, bool>> where);
 
         /// <summary>
         /// Get the first <typeparamref name="TEntity"/> from a collection derived from a given
@@ -100,5 +120,33 @@
         /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/>s.</param>
         /// <returns>A collection of <typeparamref name="TEntity"/>s.</returns>
         Task<IEnumerable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where);
+
+        /// <summary>
+        /// Get a <typeparamref name="TEntity"/> using a given criterion where it would be expected
+        /// that only one should be found.
+        /// </summary>
+        /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/>.</param>
+        /// <returns>The <typeparamref name="TEntity"/> or null if none could be found.</returns>
+        TEntity Single(Expression<Func<TEntity, bool>> where);
+
+        /// <summary>
+        /// Get a <typeparamref name="TEntity"/> using a given criterion where it would be expected
+        /// that only one should be found.
+        /// </summary>
+        /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/>.</param>
+        /// <returns>The <typeparamref name="TEntity"/> or null if none could be found.</returns>
+        Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> where);
+
+        /// <summary>
+        /// Change a <typeparamref name="TEntity"/>.
+        /// </summary>
+        /// <param name="entity">The <typeparamref name="TEntity"/> to change.</param>
+        void Update(TEntity entity);
+
+        /// <summary>
+        /// Change a <typeparamref name="TEntity"/>.
+        /// </summary>
+        /// <param name="entity">The <typeparamref name="TEntity"/> to change.</param>
+        Task UpdateAsync(TEntity entity);
     }
 }

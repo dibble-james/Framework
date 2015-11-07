@@ -14,7 +14,6 @@
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IPersistedObject
     {
         private readonly DbContext _context;
-        private readonly IDbSet<TEntity> _entities;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="Repository{TEntity}"/> class.
@@ -23,27 +22,14 @@
         public Repository(IEntityUnitOfWork context)
         {
             this._context = context.CurrentContext;
-            this._entities = this._context.Set<TEntity>();
         }
 
-        public int Count()
+        private IDbSet<TEntity> Entities
         {
-            return this._entities.Count();
-        }
-        
-        public async Task<int> CountAsync()
-        {
-            return await this._entities.CountAsync();
-        }
-
-        public int Count(Expression<Func<TEntity, bool>> @where)
-        {
-            return this._entities.Count(@where);
-        }
-
-        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> where)
-        {
-            return await this._entities.CountAsync(where);
+            get
+            {
+                return this._context.Set<TEntity>();
+            }
         }
 
         /// <summary>
@@ -52,27 +38,71 @@
         /// <param name="entity">The <typeparamref name="TEntity"/> to add.</param>
         public void Add(TEntity entity)
         {
-            this._entities.Add(entity);
+            this.Entities.Add(entity);
         }
 
         /// <summary>
-        /// Change a <typeparamref name="TEntity"/>. Only call this if you are updating an entity 
-        /// that has not previously come from a <see cref="DbContext"/>.
+        /// Place a <typeparamref name="TEntity"/> into the <see cref="IRepository{TEntity}"/>.
         /// </summary>
-        /// <param name="entity">The <typeparamref name="TEntity"/> to change.</param>
-        public void Update(TEntity entity)
+        /// <param name="entity">The <typeparamref name="TEntity"/> to add.</param>
+        public Task AddAsync(TEntity entity)
         {
-            this._entities.Attach(entity);
-            this._context.Entry(entity).State = EntityState.Modified;
+            this.Add(entity);
+
+            return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Get the number of <typeparamref name="TEntity"/>s in he persistence store.
+        /// </summary>
+        /// <returns>
+        /// The number of <typeparamref name="TEntity"/>s in he persistence store.
+        /// </returns>
+        public int Count()
+        {
+            return this.Entities.Count();
+        }
+
+        /// <summary>
+        /// Get the number of <typeparamref name="TEntity"/>s in he persistence store that
+        /// match a criteria.
+        /// </summary>
+        /// <returns>
+        /// The number of <typeparamref name="TEntity"/>s in he persistence store.
+        /// </returns>
+        public int Count(Expression<Func<TEntity, bool>> @where)
+        {
+            return this.Entities.Count(@where);
+        }
+
+        /// <summary>
+        /// Get the number of <typeparamref name="TEntity"/>s in he persistence store.
+        /// </summary>
+        /// <returns>
+        /// The number of <typeparamref name="TEntity"/>s in he persistence store.
+        /// </returns>
+        public async Task<int> CountAsync()
+        {
+            return await this.Entities.CountAsync();
+        }
+        /// <summary>
+        /// Get the number of <typeparamref name="TEntity"/>s in he persistence store that
+        /// match a criteria.
+        /// </summary>
+        /// <returns>
+        /// The number of <typeparamref name="TEntity"/>s in he persistence store.
+        /// </returns>
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> where)
+        {
+            return await this.Entities.CountAsync(where);
+        }
         /// <summary>
         /// Remove a <typeparamref name="TEntity"/>.
         /// </summary>
         /// <param name="entity">The <typeparamref name="TEntity"/> to remove.</param>
         public void Delete(TEntity entity)
         {
-            this._entities.Remove(entity);
+            this.Entities.Remove(entity);
         }
 
         /// <summary>
@@ -90,29 +120,25 @@
         }
 
         /// <summary>
-        /// Get a <typeparamref name="TEntity"/> using a given criterion where it would be expected
-        /// that only one should be found.
+        /// Remove a <typeparamref name="TEntity"/>.
         /// </summary>
-        /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/>.</param>
-        /// <returns>The <typeparamref name="TEntity"/> or null if none could be found.</returns>
-        public TEntity Single(Expression<Func<TEntity, bool>> @where)
+        /// <param name="entity">The <typeparamref name="TEntity"/> to remove.</param>
+        public Task DeleteAsync(TEntity entity)
         {
-            var entity = this._entities.SingleOrDefault(where);
+            this.Delete(entity);
 
-            return entity;
+            return Task.CompletedTask;
         }
 
         /// <summary>
-        /// Get a <typeparamref name="TEntity"/> using a given criterion where it would be expected
-        /// that only one should be found.
+        /// Remove a <typeparamref name="TEntity"/>.
         /// </summary>
-        /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/>.</param>
-        /// <returns>The <typeparamref name="TEntity"/> or null if none could be found.</returns>
-        public async Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> where)
+        /// <param name="entity">The <typeparamref name="TEntity"/> to remove.</param>
+        public Task DeleteAsync(Expression<Func<TEntity, bool>> where)
         {
-            var entity = await this._entities.SingleOrDefaultAsync(where);
+            this.Delete(where);
 
-            return entity;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -123,7 +149,7 @@
         /// <returns>The first <typeparamref name="TEntity"/> or null if none could be found.</returns>
         public TEntity First(Expression<Func<TEntity, bool>> @where)
         {
-            var entity = this._entities.FirstOrDefault(where);
+            var entity = this.Entities.FirstOrDefault(where);
 
             return entity;
         }
@@ -136,7 +162,7 @@
         /// <returns>The first <typeparamref name="TEntity"/> or null if none could be found.</returns>
         public async Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> where)
         {
-            var entity = await this._entities.FirstOrDefaultAsync(where);
+            var entity = await this.Entities.FirstOrDefaultAsync(where);
 
             return entity;
         }
@@ -147,7 +173,7 @@
         /// <returns>All the known <typeparamref name="TEntity"/>s.</returns>
         public IEnumerable<TEntity> GetAll()
         {
-            return this._entities;
+            return this.Entities;
         }
 
         /// <summary>
@@ -156,7 +182,7 @@
         /// <returns>All the known <typeparamref name="TEntity"/>s.</returns>
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await this._entities.ToListAsync();
+            return await this.Entities.ToListAsync();
         }
 
         /// <summary>
@@ -166,7 +192,7 @@
         /// <returns>A collection of <typeparamref name="TEntity"/>s.</returns>
         public IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> @where)
         {
-            var entities = this._entities.Where(where);
+            var entities = this.Entities.Where(where);
 
             return entities;
         }
@@ -178,9 +204,81 @@
         /// <returns>A collection of <typeparamref name="TEntity"/>s.</returns>
         public async Task<IEnumerable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where)
         {
-            var entities = await this._entities.Where(where).ToListAsync();
+            var entities = await this.Entities.Where(where).ToListAsync();
 
             return entities;
         }
+
+        /// <summary>
+        /// Get a <typeparamref name="TEntity"/> using a given criterion where it would be expected
+        /// that only one should be found.
+        /// </summary>
+        /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/>.</param>
+        /// <returns>The <typeparamref name="TEntity"/> or null if none could be found.</returns>
+        public TEntity Single(Expression<Func<TEntity, bool>> @where)
+        {
+            var entity = this.Entities.SingleOrDefault(where);
+
+            return entity;
+        }
+
+        /// <summary>
+        /// Get a <typeparamref name="TEntity"/> using a given criterion where it would be expected
+        /// that only one should be found.
+        /// </summary>
+        /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/>.</param>
+        /// <returns>The <typeparamref name="TEntity"/> or null if none could be found.</returns>
+        public async Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> where)
+        {
+            var entity = await this.Entities.SingleOrDefaultAsync(where);
+
+            return entity;
+        }
+
+        /// <summary>
+        /// Change a <typeparamref name="TEntity"/>. Only call this if you are updating an entity 
+        /// that has not previously come from a <see cref="DbContext"/>.
+        /// </summary>
+        /// <param name="entity">The <typeparamref name="TEntity"/> to change.</param>
+        public void Update(TEntity entity)
+        {
+            this.Entities.Attach(entity);
+            this._context.Entry(entity).State = EntityState.Modified;
+        }
+        /// <summary>
+        /// Change a <typeparamref name="TEntity"/>.
+        /// </summary>
+        /// <param name="entity">The <typeparamref name="TEntity"/> to change.</param>
+        public Task UpdateAsync(TEntity entity)
+        {
+            this.Update(entity);
+
+            return Task.CompletedTask;
+        }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this._context.Dispose();
+                }
+
+                this.disposedValue = true;
+            }
+        }
+        #endregion
     }
 }
