@@ -16,7 +16,7 @@
         private readonly DbContext _context;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="Repository{TEntity}"/> class.
+        /// Initializes a new instance of the <see cref="Repository{TEntity}"/> class.
         /// </summary>
         /// <param name="context">The context to work from.</param>
         public Repository(IEntityUnitOfWork context)
@@ -36,20 +36,20 @@
         /// Place a <typeparamref name="TEntity"/> into the <see cref="IRepository{TEntity}"/>.
         /// </summary>
         /// <param name="entity">The <typeparamref name="TEntity"/> to add.</param>
-        public void Add(TEntity entity)
+        public TEntity Add(TEntity entity)
         {
             this.Entities.Add(entity);
+
+            return entity;
         }
 
         /// <summary>
         /// Place a <typeparamref name="TEntity"/> into the <see cref="IRepository{TEntity}"/>.
         /// </summary>
         /// <param name="entity">The <typeparamref name="TEntity"/> to add.</param>
-        public Task AddAsync(TEntity entity)
+        public Task<TEntity> AddAsync(TEntity entity)
         {
-            this.Add(entity);
-
-            return Task.CompletedTask;
+            return Task.FromResult(this.Add(entity));
         }
 
         /// <summary>
@@ -85,6 +85,7 @@
         {
             return await this.Entities.CountAsync();
         }
+
         /// <summary>
         /// Get the number of <typeparamref name="TEntity"/>s in he persistence store that
         /// match a criteria.
@@ -95,14 +96,6 @@
         public async Task<int> CountAsync(Expression<Func<TEntity, bool>> where)
         {
             return await this.Entities.CountAsync(where);
-        }
-        /// <summary>
-        /// Remove a <typeparamref name="TEntity"/>.
-        /// </summary>
-        /// <param name="entity">The <typeparamref name="TEntity"/> to remove.</param>
-        public void Delete(TEntity entity)
-        {
-            this.Entities.Remove(entity);
         }
 
         /// <summary>
@@ -115,19 +108,8 @@
 
             foreach (var entity in objectsToDelete)
             {
-                this.Delete(entity);
+                this.Entities.Remove(entity);
             }
-        }
-
-        /// <summary>
-        /// Remove a <typeparamref name="TEntity"/>.
-        /// </summary>
-        /// <param name="entity">The <typeparamref name="TEntity"/> to remove.</param>
-        public Task DeleteAsync(TEntity entity)
-        {
-            this.Delete(entity);
-
-            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -236,24 +218,23 @@
         }
 
         /// <summary>
-        /// Change a <typeparamref name="TEntity"/>. Only call this if you are updating an entity 
-        /// that has not previously come from a <see cref="DbContext"/>.
+        /// Change a <typeparamref name="TEntity"/>.
         /// </summary>
+        /// <remarks>Entity Framework tracks changes.</remarks>
         /// <param name="entity">The <typeparamref name="TEntity"/> to change.</param>
-        public void Update(TEntity entity)
+        /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/>.</param>
+        public TEntity Update(TEntity entity, Expression<Func<TEntity, bool>> @where)
         {
-            this.Entities.Attach(entity);
-            this._context.Entry(entity).State = EntityState.Modified;
+            return entity;
         }
         /// <summary>
         /// Change a <typeparamref name="TEntity"/>.
         /// </summary>
         /// <param name="entity">The <typeparamref name="TEntity"/> to change.</param>
-        public Task UpdateAsync(TEntity entity)
+        /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/>.</param>
+        public Task<TEntity> UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> @where)
         {
-            this.Update(entity);
-
-            return Task.CompletedTask;
+            return Task.FromResult(this.Update(entity, @where));
         }
 
         #region IDisposable Support

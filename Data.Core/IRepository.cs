@@ -15,13 +15,13 @@
         /// Place a <typeparamref name="TEntity"/> into the <see cref="IRepository{TEntity}"/>.
         /// </summary>
         /// <param name="entity">The <typeparamref name="TEntity"/> to add.</param>
-        void Add(TEntity entity);
+        TEntity Add(TEntity entity);
 
         /// <summary>
         /// Place a <typeparamref name="TEntity"/> into the <see cref="IRepository{TEntity}"/>.
         /// </summary>
         /// <param name="entity">The <typeparamref name="TEntity"/> to add.</param>
-        Task AddAsync(TEntity entity);
+        Task<TEntity> AddAsync(TEntity entity);
 
         /// <summary>
         /// Get the number of <typeparamref name="TEntity"/>s in he persistence store.
@@ -47,6 +47,7 @@
         /// The number of <typeparamref name="TEntity"/>s in he persistence store.
         /// </returns>
         Task<int> CountAsync();
+
         /// <summary>
         /// Get the number of <typeparamref name="TEntity"/>s in he persistence store that
         /// match a criteria.
@@ -55,23 +56,12 @@
         /// The number of <typeparamref name="TEntity"/>s in he persistence store.
         /// </returns>
         Task<int> CountAsync(Expression<Func<TEntity, bool>> where);
-        /// <summary>
-        /// Remove a <typeparamref name="TEntity"/>.
-        /// </summary>
-        /// <param name="entity">The <typeparamref name="TEntity"/> to remove.</param>
-        void Delete(TEntity entity);
 
         /// <summary>
         /// Delete a group of <typeparamref name="TEntity"/>s using a given criterion.
         /// </summary>
         /// <param name="where">The criteria by which to delete <typeparamref name="TEntity"/>s.</param>
         void Delete(Expression<Func<TEntity, bool>> where);
-
-        /// <summary>
-        /// Remove a <typeparamref name="TEntity"/>.
-        /// </summary>
-        /// <param name="entity">The <typeparamref name="TEntity"/> to remove.</param>
-        Task DeleteAsync(TEntity entity);
 
         /// <summary>
         /// Delete a group of <typeparamref name="TEntity"/>s using a given criterion.
@@ -141,12 +131,14 @@
         /// Change a <typeparamref name="TEntity"/>.
         /// </summary>
         /// <param name="entity">The <typeparamref name="TEntity"/> to change.</param>
-        void Update(TEntity entity);
+        /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/> to update.</param>
+        TEntity Update(TEntity entity, Expression<Func<TEntity, bool>> where);
 
         /// <summary>
         /// Change a <typeparamref name="TEntity"/>.
         /// </summary>
         /// <param name="entity">The <typeparamref name="TEntity"/> to change.</param>
-        Task UpdateAsync(TEntity entity);
+        /// <param name="where">The criteria by which to find the <typeparamref name="TEntity"/> to update.</param>
+        Task<TEntity> UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> where);
     }
 }
