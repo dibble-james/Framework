@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Data.MongoDb")]
+[assembly: AssemblyTitle("Dibble.Framework.Data.MongoDb")]
 [assembly: AssemblyDescription("An implementation of the Unit of Work Pattern with Mongo DB")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("James Dibble")]
-[assembly: AssemblyProduct("Data.MongoDb")]
+[assembly: AssemblyProduct("Dibble.Framework.Data.MongoDb")]
 [assembly: AssemblyCopyright("James Dibble Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
