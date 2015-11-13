@@ -60,6 +60,7 @@
     <None Include="..\Dibble.snk">
       <Link>Dibble.snk</Link>
     </None>
+    <None Include="Data.MongoDb.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
